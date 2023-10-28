@@ -53,6 +53,9 @@ namespace Todo_App.Infrastructure.Persistence.Migrations
                     b.Property<string>("Note")
                         .HasMaxLength(2)
                         .HasColumnType("nvarchar(2)");
+                    b.Property<string>("Tag")
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(MAX)");
 
                     b.Property<int>("Priority")
                         .HasColumnType("int");
