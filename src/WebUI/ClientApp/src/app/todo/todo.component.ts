@@ -32,8 +32,10 @@ export class TodoComponent implements OnInit {
     id: [null],
     listId: [null],
     priority: [''],
-    note: ['']
+    note: [''],
+    tags:['']
   });
+  tags: string[] = [];
 
 
   constructor(
@@ -98,6 +100,12 @@ export class TodoComponent implements OnInit {
     );
   }
 
+  onEnter(value: string) {
+    this.tags.push(value);
+    this.selectedItem.tags = '';
+    this.itemDetailsFormGroup.patchValue(this.selectedItem);
+  }
+
   showListOptionsModal(template: TemplateRef<any>) {
     this.listOptionsEditor = {
       id: this.selectedList.id,
@@ -138,8 +146,12 @@ export class TodoComponent implements OnInit {
   // Items
   showItemDetailsModal(template: TemplateRef<any>, item: TodoItemDto): void {
     this.selectedItem = item;
+    if (this.selectedItem.tags) {
+      this.tags = this.selectedItem.tags.split(',');
+    }
+    this.selectedItem.tags = '';
     this.itemDetailsFormGroup.patchValue(this.selectedItem);
-
+    
     this.itemDetailsModalRef = this.modalService.show(template);
     this.itemDetailsModalRef.onHidden.subscribe(() => {
         this.stopDeleteCountDown();
@@ -148,6 +160,7 @@ export class TodoComponent implements OnInit {
 
   updateItemDetails(): void {
     const item = new UpdateTodoItemDetailCommand(this.itemDetailsFormGroup.value);
+    item.tags = this.tags.join(',');
     this.itemsClient.updateItemDetails(this.selectedItem.id, item).subscribe(
       () => {
         if (this.selectedItem.listId !== item.listId) {
@@ -163,6 +176,7 @@ export class TodoComponent implements OnInit {
 
         this.selectedItem.priority = item.priority;
         this.selectedItem.note = item.note;
+        this.selectedItem.tags = item.tags;
         this.itemDetailsModalRef.hide();
         this.itemDetailsFormGroup.reset();
       },
@@ -260,5 +274,11 @@ export class TodoComponent implements OnInit {
     clearInterval(this.deleteCountDownInterval);
     this.deleteCountDown = 0;
     this.deleting = false;
+  }
+
+  removeTag(tag: string) {
+    this.tags = this.tags.filter((element) => {
+      return element.toLowerCase() != tag.toLowerCase()
+    });
   }
 }
