@@ -7,6 +7,7 @@ public class TodoItem : BaseAuditableEntity
     public string? Title { get; set; }
 
     public string? Note { get; set; }
+    public DateTime? Deleted { get; set; }
 
     public PriorityLevel Priority { get; set; }
 
