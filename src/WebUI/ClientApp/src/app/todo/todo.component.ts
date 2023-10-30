@@ -32,7 +32,8 @@ export class TodoComponent implements OnInit {
     id: [null],
     listId: [null],
     priority: [''],
-    note: ['']
+    note: [''],
+    deleted:[null]
   });
 
 
@@ -246,13 +247,11 @@ export class TodoComponent implements OnInit {
       const itemIndex = this.selectedList.items.indexOf(this.selectedItem);
       this.selectedList.items.splice(itemIndex, 1);
     } else {
-      this.itemsClient.delete(item.id).subscribe(
-        () =>
-        (this.selectedList.items = this.selectedList.items.filter(
-          t => t.id !== item.id
-        )),
-        error => console.error(error)
-      );
+      this.itemDetailsFormGroup.value.deleted = new Date()
+      this.updateItemDetails()
+      this.selectedList.items = this.selectedList.items.filter(
+        t => t.id !== item.id
+      )
     }
   }
 

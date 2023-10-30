@@ -490,6 +490,11 @@
           "note": {
             "type": "string",
             "nullable": true
+          },
+          "deleted": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
           }
         }
       },
@@ -590,6 +595,11 @@
           },
           "note": {
             "type": "string",
+            "nullable": true
+          },
+          "deleted": {
+            "type": "string",
+            "format": "date-time",
             "nullable": true
           }
         }
