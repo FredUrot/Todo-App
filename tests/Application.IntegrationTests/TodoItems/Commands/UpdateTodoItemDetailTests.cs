@@ -42,7 +42,8 @@ public class UpdateTodoItemDetailTests : BaseTestFixture
             Id = itemId,
             ListId = listId,
             Note = "A1",
-            Priority = PriorityLevel.High
+            Priority = PriorityLevel.High,
+            Color = "#ffffff"
         };
 
         await SendAsync(command);
@@ -52,6 +53,7 @@ public class UpdateTodoItemDetailTests : BaseTestFixture
         item.Should().NotBeNull();
         item!.ListId.Should().Be(command.ListId);
         item.Note.Should().Be(command.Note);
+        item.Color.Should().Be(command.Color);
         item.Priority.Should().Be(command.Priority);
         item.LastModifiedBy.Should().NotBeNull();
         item.LastModifiedBy.Should().Be(userId);
